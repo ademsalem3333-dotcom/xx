@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>to my fvrt person in the world💖</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+        
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'Cairo', sans-serif; overflow: hidden; background: #fff0f3;
+        }
+
+        /* --- 1. شاشة القفل --- */
+        #lock-screen {
+            position: fixed; inset: 0; background: #1a1a1a;
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; z-index: 9999; color: white; transition: 1s;
+        }
+        .input-box { padding: 15px; border-radius: 10px; border: none; margin-top: 20px; width: 250px; text-align: center; }
+        .unlock-btn { background: #ff4d6d; color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; margin-top: 15px; }
+
+        /* --- 2. شاشة HBD الوردية --- */
+       #pink-screen {
+            position: fixed; inset: 0; 
+            /* ارفعي صورة الخلفية وضعي رابطها هنا */
+            background-image: url('BABY.PNG'); 
+            background-size: cover;
+            background-position: center;
+            display: none; justify-content: center; align-items: center;
+            z-index: 9998; color: white; opacity: 0; transition: 1,5s;
+        }
+        /* إضافة طبقة تظليل خفيفة لجعل النص واضحاً */
+        #pink-screen::before {
+            content: "";
+            position: absolute; inset: 0;
+            background: rgba(255, 77, 109, 0.4); /* لون وردي شفاف فوق الصورة */
+            z-index: -1;
+        }
+        #pink-screen h1 { font-size: 3.5rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.3); text-align: center; }
+
+        /* ---  video page --- */
+       /* --- خلفية صفحة الفيديو --- */
+        #video-page {
+            position: fixed; inset: 0;
+            /* استبدلي 'video_bg.jpg' باسم صورتك */
+            background-image: url('a.png'); 
+            background-size: cover;
+            background-position: center;
+            display: none; flex-direction: column; justify-content: center;
+            align-items: center; z-index: 9997; opacity: 0; transition: 1.5s;
+        }
+        /* تظليل خفيف لصفحة الفيديو باش يظهر الإطار الوردي */
+        #video-page::before {
+            content: "";
+            position: absolute; inset: 0;
+            background: rgba(0, 0, 0, 0.4); 
+            z-index: -1;
+        }
+        .video-frame {
+            width: 80%; max-width: 600px; border: 8px solid #ff4d6d;
+            border-radius: 20px; box-shadow: 0 0 30px rgba(255, 77, 109, 0.5);
+            overflow: hidden; position: relative;
+        }
+        .video-frame video { width: 100%; display: block; }
+        .magic-trigger-btn {
+            background: #ff4d6d; color: white; border: none;
+            padding: 15px 40px; border-radius: 50px; font-size: 1.2rem;
+            margin-top: 30px; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        .magic-trigger-btn:hover { transform: scale(1.1); background: #ff1a4d; }
+
+        /* --- 4. صفحة الصور النهائية --- */
+        #main-content {
+            height: 100vh; width: 100vw; position: relative;
+            display: none; opacity: 0; transition: 2s;
+            /* استبدلي 'your-image-name.jpg' باسم صورتك الخاصة */
+            background-image: url('c.png'); 
+            background-size: cover;
+            background-position: center;
+        }
+        /* طبقة تظليل خفيفة اختيارية لجعل الصور تبرز أكثر */
+        #main-content::before {
+            content: "";
+            position: absolute; inset: 0;
+            background: rgba(255, 240, 243, 0.3); 
+            z-index: 0;
+        }
+        #heart-grid, #extra-photos-container { z-index: 1; }
+
+        #heart-grid {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            display: grid; grid-template-columns: repeat(3, 110px);
+            grid-template-rows: repeat(4, 130px); gap: 5px;
+        }
+
+        .photo, .extra-photo {
+            width: 100px; height: 120px; background: white; padding: 5px;
+            border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: absolute; top: -200px; /* البداية من خارج الشاشة بالأعلى */
+            transition: 1.5s cubic-bezier(0.25, 0.1, 0.25, 1); opacity: 0;
+        }
+        .photo img, .extra-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 5px; }
+        
+        .extra-photo {
+            z-index: 10; 
+        }
+
+        /* لضمان أن القلب يبقى تحتهم */
+        .photo {
+            z-index: 1;
+        }
+
+        /* مواضع القلب */
+        .grid-item-0 { grid-column: 2; grid-row: 1; position: relative; top: auto; }
+        .grid-item-1 { grid-column: 1; grid-row: 2; position: relative; top: auto; }
+        .grid-item-2 { grid-column: 2; grid-row: 2; position: relative; top: auto; }
+        .grid-item-3 { grid-column: 3; grid-row: 2; position: relative; top: auto; }
+        .grid-item-4 { grid-column: 1; grid-row: 3; position: relative; top: auto; }
+        .grid-item-5 { grid-column: 2; grid-row: 3; position: relative; top: auto; }
+        .grid-item-6 { grid-column: 3; grid-row: 3; position: relative; top: auto; }
+        .grid-item-7 { grid-column: 2; grid-row: 4; position: relative; top: auto; }
+
+        .petal { position: fixed; z-index: 10000; pointer-events: none; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div id="lock-screen">
+        <h5>?hi chahdouda! what's my favorite food ✨</h5>
+        <input type="text" id="answer" class="input-box" placeholder="..ekteb hnee">
+        <button class="unlock-btn" onclick="checkAnswer()">enter ❤️</button>
+    </div>
+
+    <div id="pink-screen"><h3>❤️HAPPY BIRTHDAY DOUDY! 🎂<br>adam loves u sooo much <br>wishing u a day filled with love, <br> laughter and all your heart desires </h3></div>
+
+    <div id="video-page">
+        <div class="video-frame">
+            <video controls id="myVideo">
+                <source src="HKQH3659.MOV" type="video/mp4">
+                متصفحك لا يدعم الفيديو.
+            </video>
+        </div>
+        <button class="magic-trigger-btn" onclick="revealPhotos()">see more ktous🎁</button>
+    </div>
+
+    <div id="main-content">
+        <div id="heart-grid">
+            <div class="photo grid-item-0"><img src="IMG_9377.PNG"></div>
+            <div class="photo grid-item-1"><img src="IMG_9361.PNG"></div>
+            <div class="photo grid-item-2"><img src="IMG_9362.PNG"></div>
+            <div class="photo grid-item-3"><img src="IMG_9363.PNG"></div>
+            <div class="photo grid-item-4"><img src="IMG_9364.PNG"></div>
+            <div class="photo grid-item-5"><img src="IMG_9365.PNG"></div>
+            <div class="photo grid-item-6"><img src="IMG_9366.PNG"></div>
+            <div class="photo grid-item-7"><img src="IMG_9367.PNG"></div>
+        </div>
+        <div id="extra-photos-container">
+            <div class="extra-photo"><img src="IMG_9368.PNG"></div>
+            <div class="extra-photo"><img src="IMG_9369.PNG"></div>
+            <div class="extra-photo"><img src="IMG_9372.PNG"></div>
+            <div class="extra-photo"><img src="IMG_9370.PNG"></div>
+            <div class="extra-photo"><img src="IMG_9371.PNG"></div>
+            <div class="extra-photo"><img src="IMG_9378.PNG"></div>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer() {
+            const ans = document.getElementById('answer').value.toLowerCase().trim();
+            const correctAnswers = ["doudy", "chahd", "ena"];
+            
+            if (ans === "kosksy") {
+                alert("sahyyyytttt ama fama heja aban...rakaz ");
+            } 
+            else if (correctAnswers.includes(ans)) {
+                document.getElementById('lock-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('lock-screen').style.display = 'none';
+                    const pink = document.getElementById('pink-screen');
+                    pink.style.display = 'flex';
+                    setTimeout(() => pink.style.opacity = '1', 50);
+                    
+                    // --- تعديل: زيادة المدة لـ 6 ثوانٍ (6000 مللي ثانية) ---
+                    setTimeout(showVideoPage, 5000); 
+                }, 1000);
+            } 
+            else {
+                alert("lee yezi ble bhema");
+            }
+        }
+
+        function showVideoPage() {
+            const pink = document.getElementById('pink-screen');
+            const video = document.getElementById('myVideo');
+            
+            pink.style.opacity = '0';
+            setTimeout(() => {
+                pink.style.display = 'none';
+                const vPage = document.getElementById('video-page');
+                vPage.style.display = 'flex';
+                setTimeout(() => {
+                    vPage.style.opacity = '1';
+                    video.play().catch(e => console.log("Auto-play blocked"));
+                }, 50);
+            }, 1000);
+        }
+
+        function revealPhotos() {
+            const video = document.getElementById('myVideo');
+            video.pause();
+            document.getElementById('video-page').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('video-page').style.display = 'none';
+                const main = document.getElementById('main-content');
+                main.style.display = 'block';
+                setTimeout(() => {
+                    main.style.opacity = '1';
+                    animatePhotosFalling();
+                    setInterval(createPetal, 300);
+                }, 50);
+            }, 1000);
+        }
+
+        function animatePhotosFalling() {
+            const allPhotos = document.querySelectorAll('.photo');
+            const extraPhotos = document.querySelectorAll('.extra-photo');
+
+            // 1. تحريك صور القلب لمكانها الأصلي في الشبكة (Grid)
+            allPhotos.forEach((p, i) => {
+                setTimeout(() => {
+                    p.style.opacity = '1';
+                    p.style.top = '0'; 
+                    p.style.transform = 'scale(1) rotate(0deg)';
+                }, i * 300);
+            });
+
+            // 2. توزيع الصور الإضافية في الزوايا بشكل أنيق (منظم)
+            // قمت بتحديد 5 مواقع ثابتة في الزوايا بدلاً من العشوائية المطلقة
+            const positions = [
+                { top: '5%', left: '5%', rot: '-15deg' },   // أعلى اليسار
+                { top: '5%', left: '75%', rot: '15deg' },   // أعلى اليمين
+                { top: '70%', left: '5%', rot: '-10deg' },  // أسفل اليسار
+                { top: '70%', left: '75%', rot: '10deg' },  // أسفل اليمين
+                { top: '35%', left: '70%', rot: '5deg' } , // يمين المنتصف
+                { top: '35%', left: '15%', rot: '-5deg' }    // يمين المنتصف
+            ];
+
+            extraPhotos.forEach((p, i) => {
+                setTimeout(() => {
+                    p.style.opacity = '1';
+                    p.style.zIndex = "100";
+                    if (positions[i]) {
+                        p.style.top = positions[i].top;
+                        p.style.left = positions[i].left;
+                        p.style.transform = `rotate(${positions[i].rot}) scale(1.1)`;
+                    }
+                }, (allPhotos.length + i) * 300); // تظهر بعد اكتمال القلب
+            });
+        }
+
+        function createPetal() {
+            const p = document.createElement('div');
+            p.className = 'petal';
+            p.innerHTML = '🌸';
+            p.style.left = Math.random() * 100 + "vw";
+            p.style.fontSize = Math.random() * 15 + 10 + "px";
+            p.style.animationDuration = Math.random() * 3 + 2 + "s";
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
